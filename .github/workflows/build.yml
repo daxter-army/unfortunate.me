@@ -1,0 +1,59 @@
+name: Build and publish hosting branch
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write   # allows the Action to push to the repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Publish build to hosting branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          build_dir="$(mktemp -d)"
+          cp -R dist/. "$build_dir/"
+
+          if git ls-remote --exit-code --heads origin hosting; then
+            git fetch origin hosting:hosting
+            git switch hosting
+          else
+            git switch --orphan hosting
+          fi
+
+          git rm -r --ignore-unmatch .
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -R "$build_dir"/. .
+          touch .nojekyll
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No build changes to publish."
+            exit 0
+          fi
+
+          git commit -m "chore: publish build [skip ci]"
+          git push --force origin hosting
