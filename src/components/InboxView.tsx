@@ -22,7 +22,6 @@ const filters = [
   'Has attachment',
   'To',
   'Is unread',
-  'Still hiring, allegedly',
 ]
 
 function getSnippet(email: RejectionEmail) {
@@ -42,9 +41,9 @@ export function InboxView({ emails }: InboxViewProps) {
     <section className="message-shell inbox-shell" aria-label="Search results">
       <div className="filter-bar" aria-label="Search filters">
         {filters.map((filter) => (
-          <button type="button" key={filter}>
+          <button type="button" key={filter} title={filter === 'Is unread' ? 'Emotionally, all of them.' : 'Still hiring, allegedly.'}>
             {filter}
-            <MdArrowDropDown aria-hidden="true" />
+            {['From', 'Any time', 'To'].includes(filter) ? <MdArrowDropDown aria-hidden="true" /> : null}
           </button>
         ))}
         <a href="#advanced-search">Advanced search</a>
@@ -87,7 +86,7 @@ export function InboxView({ emails }: InboxViewProps) {
             key={email.company}
           >
             <span className="checkbox-button" aria-hidden="true"></span>
-            <span className="row-star" aria-hidden="true">
+            <span className={`row-star ${index % 3 === 1 ? 'is-starred' : ''}`} aria-hidden="true">
               {index % 3 === 1 ? <MdStar /> : <MdStarBorder />}
             </span>
             <span className="row-sender">{getSenderLabel(email.sender)}</span>

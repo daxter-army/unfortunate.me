@@ -5,19 +5,20 @@ import {
   MdApps,
   MdCalendarToday,
   MdClose,
-  MdDrafts,
-  MdErrorOutline,
+  MdLabel,
+  MdPerson,
+  MdOutlineEdit,
   MdExpandMore,
   MdHelpOutline,
-  MdInbox,
-  MdInsertDriveFile,
+  MdOutlineInbox,
+  MdOutlineInsertDriveFile,
   MdLightbulbOutline,
   MdMenu,
   MdSchedule,
   MdSearch,
-  MdSend,
-  MdSettings,
-  MdShoppingBag,
+  MdOutlineSend,
+  MdOutlineSettings,
+  MdOutlineShoppingBag,
   MdStarBorder,
   MdTaskAlt,
   MdTune,
@@ -29,12 +30,12 @@ type GmailLayoutProps = {
 }
 
 const folders = [
-  { label: 'Inbox', count: '6,386', icon: MdInbox, path: '/inbox' },
+  { label: 'Inbox', count: '6,386', icon: MdOutlineInbox, path: '/inbox', strong: true },
   { label: 'Starred', icon: MdStarBorder, path: '/inbox' },
   { label: 'Snoozed', icon: MdSchedule, path: '/inbox' },
-  { label: 'Sent', icon: MdSend, path: '/inbox' },
-  { label: 'Drafts', count: '4', icon: MdInsertDriveFile, path: '/inbox', strong: true },
-  { label: 'Purchases', count: '47', icon: MdShoppingBag, path: '/inbox', strong: true },
+  { label: 'Sent', icon: MdOutlineSend, path: '/inbox' },
+  { label: 'Drafts', count: '4', icon: MdOutlineInsertDriveFile, path: '/inbox', strong: true },
+  { label: 'Purchases', count: '47', icon: MdOutlineShoppingBag, path: '/inbox', strong: true },
 ]
 
 export function GmailLayout({ children }: GmailLayoutProps) {
@@ -45,10 +46,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
           <button className="gmail-icon-button" type="button" aria-label="Main menu">
             <MdMenu aria-hidden="true" />
           </button>
-          <div className="gmail-logo" aria-hidden="true">
-            <span></span>
-          </div>
-          <span className="gmail-wordmark">Gmail</span>
+          <img className="gmail-lockup" src={`${import.meta.env.BASE_URL}gmail-lockup.png`} alt="Gmail" width="109" height="40" />
         </div>
 
         <div className="gmail-search" role="search">
@@ -67,7 +65,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
             <MdHelpOutline aria-hidden="true" />
           </button>
           <button className="gmail-icon-button" type="button" aria-label="Settings">
-            <MdSettings aria-hidden="true" />
+            <MdOutlineSettings aria-hidden="true" />
           </button>
           <button className="gmail-icon-button sparkle" type="button" aria-label="Gemini">
             ✦
@@ -85,7 +83,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
       <div className="gmail-content">
         <aside className="gmail-sidebar" aria-label="Mailbox navigation">
           <button className="compose-button" type="button">
-            <span className="compose-pencil">✎</span>
+            <MdOutlineEdit aria-hidden="true" />
             Compose
           </button>
 
@@ -95,11 +93,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
 
               return (
                 <NavLink
-                  className={({ isActive }) =>
-                    `folder-item ${isActive && folder.label === 'Inbox' ? 'active' : ''} ${
-                      folder.strong ? 'strong' : ''
-                    }`
-                  }
+                  className={`folder-item ${folder.strong ? 'strong' : ''}`}
                   to={folder.path}
                   key={folder.label}
                 >
@@ -123,7 +117,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
           </div>
 
           <NavLink className="folder-item label-item" to="/inbox">
-            <MdDrafts aria-hidden="true" />
+            <MdLabel aria-hidden="true" />
             <span>[Imap]/Drafts</span>
           </NavLink>
         </aside>
@@ -132,7 +126,7 @@ export function GmailLayout({ children }: GmailLayoutProps) {
 
         <aside className="apps-rail" aria-label="Google side panel">
           <button type="button" aria-label="Calendar">
-            <MdCalendarToday aria-hidden="true" />
+            <span className="calendar-icon"><MdCalendarToday aria-hidden="true" /><b>31</b></span>
           </button>
           <button type="button" aria-label="Keep">
             <MdLightbulbOutline aria-hidden="true" />
@@ -141,9 +135,9 @@ export function GmailLayout({ children }: GmailLayoutProps) {
             <MdTaskAlt aria-hidden="true" />
           </button>
           <button type="button" aria-label="Contacts">
-            <MdErrorOutline aria-hidden="true" />
+            <MdPerson aria-hidden="true" />
           </button>
-          <span></span>
+          <span className="rail-divider"></span>
           <button type="button" aria-label="Add-ons">
             <MdAdd aria-hidden="true" />
           </button>

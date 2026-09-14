@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import {
-  MdArchive,
+  MdOutlineArchive,
   MdArrowBack,
   MdChevronLeft,
   MdChevronRight,
   MdDeleteOutline,
-  MdDrafts,
+  MdOutlineMarkEmailUnread,
+  MdMoveToInbox,
   MdKeyboardArrowDown,
   MdMoreVert,
   MdOpenInNew,
   MdPrint,
-  MdRefresh,
   MdReply,
   MdReportGmailerrorred,
   MdSentimentSatisfiedAlt,
@@ -29,7 +29,7 @@ type EmailDetailViewProps = {
 
 const toolbarActions = [
   { label: 'Back to inbox', icon: MdArrowBack, to: '/inbox' },
-  { label: 'Archive', icon: MdArchive },
+  { label: 'Archive', icon: MdOutlineArchive },
   { label: 'Report spam', icon: MdReportGmailerrorred },
   { label: 'Delete', icon: MdDeleteOutline },
 ]
@@ -77,17 +77,17 @@ export function EmailDetailView({
           <span className="toolbar-rule"></span>
 
           <button
-            className="gmail-icon-button refresh-action"
+            className="gmail-icon-button"
             type="button"
             aria-label="New rejection"
             title="New rejection"
             onClick={onRefresh}
           >
-            <MdRefresh aria-hidden="true" />
+            <MdOutlineMarkEmailUnread aria-hidden="true" />
           </button>
 
-          <button className="gmail-icon-button" type="button" aria-label="Mark unread">
-            <MdDrafts aria-hidden="true" />
+          <button className="gmail-icon-button" type="button" aria-label="Move to inbox">
+            <MdMoveToInbox aria-hidden="true" />
           </button>
           <button className="gmail-icon-button" type="button" aria-label="More">
             <MdMoreVert aria-hidden="true" />
